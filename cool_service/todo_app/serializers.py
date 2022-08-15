@@ -6,8 +6,8 @@ user = get_user_model()
 
 
 class ProjectModelSerializer(serializers.ModelSerializer):
-    members = serializers.HyperlinkedRelatedField(view_name='user-detail', many=True, queryset=user.objects.all())
-    todos = serializers.SlugRelatedField(slug_field='content', read_only=True, many=True)
+    members = serializers.HyperlinkedRelatedField(view_name='users-detail', many=True, queryset=user.objects.all())
+    # todos = serializers.SlugRelatedField(slug_field='content', read_only=True, many=True)
     
     class Meta:
         model = Project
@@ -16,7 +16,7 @@ class ProjectModelSerializer(serializers.ModelSerializer):
             'project_name',
             'git_repo',
             'members',
-            'todos',
+            # 'todos',
         )
 
 
