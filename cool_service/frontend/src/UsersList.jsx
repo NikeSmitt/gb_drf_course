@@ -5,21 +5,20 @@ const UsersList = ({users}) => {
     return (
         <div>
             <table className="table container-md mt-5">
-                <thead>
-                <tr>
-                    <th scope="col">Username</th>
-                    <th scope="col">First Name</th>
-                    <th scope="col">Last Name</th>
-                    <th scope="col">Email</th>
-                </tr>
-                </thead>
-                <tbody>
-                {users.map(user => {
-                    return (<UserItem user={user} key={user.id}/>)
-                })}
-
-                </tbody>
-            </table>
+                    <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Email Name</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {users.map(user => {
+                        return <UserItem user={user} key={user.id}/>
+                    })}
+                    </tbody>
+                </table>
         </div>
     );
 };
