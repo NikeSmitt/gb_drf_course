@@ -14,3 +14,7 @@
     width: 100%;
     text-align: center;
 }
+
+.loginForm {
+    max-width: 250px;
+}
