@@ -1,4 +1,6 @@
-from rest_framework import serializers
+from rest_framework import serializers, exceptions
+
+from users_app.models import User
 from .models import Project, Todo
 from django.contrib.auth import get_user_model
 
@@ -22,8 +24,8 @@ class ProjectModelSerializer(serializers.ModelSerializer):
 
 class TodoModelSerializer(serializers.ModelSerializer):
     
-    project = ProjectModelSerializer()
-    author = serializers.SlugRelatedField('username', read_only=True)
+    # project = ProjectModelSerializer(read_only=True)
+    author = serializers.SlugRelatedField('username', queryset=User.objects.all())
     
     class Meta:
         model = Todo
@@ -37,4 +39,3 @@ class TodoModelSerializer(serializers.ModelSerializer):
             'updated_at',
         )
         
-    
