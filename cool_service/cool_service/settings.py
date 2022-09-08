@@ -13,7 +13,6 @@ from datetime import timedelta
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-import rest_framework.versioning
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -27,6 +26,17 @@ SECRET_KEY = 'django-insecure-tnkho2kqq+tq!e$fgc*q3imqcxwf_d+9@zwh%*mc($snwz#(&a
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
+
+# ----------------monkeypatching--------------------------------------
+# -----import error 'force_text' from 'django.utils.encoding'---------
+
+import django
+from django.utils.encoding import force_str
+
+django.utils.encoding.force_text = force_str
+
+# ----------------monkeypatching--------------------------------------
+# -----import error 'force_text' from 'django.utils.encoding'---------
 
 # Application definition
 
@@ -44,6 +54,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'rest_framework_simplejwt',
     'drf_yasg',
+    'graphene_django',
     
     'users_app',
     'todo_app',
@@ -159,9 +170,9 @@ REST_FRAMEWORK = {
         'django_filters.rest_framework.DjangoFilterBackend'
     ],
     
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.DjangoModelPermissions',
-    ],
+    # 'DEFAULT_PERMISSION_CLASSES': [
+    #     'rest_framework.permissions.DjangoModelPermissions',
+    # ],
     
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.BasicAuthentication',
@@ -201,4 +212,8 @@ SIMPLE_JWT = {
     'SLIDING_TOKEN_REFRESH_EXP_CLAIM': 'refresh_exp',
     'SLIDING_TOKEN_LIFETIME': timedelta(minutes=5),
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
+}
+
+GRAPHENE = {
+    "SCHEMA": 'cool_service.schema.schema'
 }
