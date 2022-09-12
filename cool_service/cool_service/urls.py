@@ -13,6 +13,8 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
+from graphene_django.views import GraphQLView
+
 schema_view = get_schema_view(
     openapi.Info(
         'Cool Service',
@@ -24,7 +26,7 @@ schema_view = get_schema_view(
 )
 
 router = DefaultRouter()
-router.register('users', UserCustomViewSet, basename='users')
+# router.register('users', UserCustomViewSet, basename='users')
 router.register('projects', ProjectModelViewSet)
 router.register('todos', TodoModelViewSet)
 
@@ -38,7 +40,12 @@ urlpatterns = [
     path('api/users/v1/', include('users_app.urls', namespace='v1')),
     path('api/users/v2/', include('users_app.urls', namespace='v2')),
     
+    
+    # documentation
     path('swagger<str:format>/', schema_view.without_ui()),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0)),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0)),
+    
+    # graphql
+    path('graphql/', GraphQLView.as_view(graphiql=True)),
 ]
