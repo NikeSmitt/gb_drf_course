@@ -1,10 +1,23 @@
-import React from 'react';
-import {Link, useParams} from "react-router-dom";
+import React, {useState} from 'react';
+import {Link} from "react-router-dom";
 
-const ProjectList = ({projects}) => {
+const ProjectList = ({projects, users}) => {
+    const [filteredProjects, setFilteredProjects] = useState(projects)
+    const filterProjectsByName = (e) => {
+        const filteredProjects = projects.filter(project => project.projectName.includes(e.target.value))
+        setFilteredProjects(filteredProjects)
+    }
     return (
-        <div>
-            <table className="table container-md mt-5">
+        <div className="container-md">
+            <form className="form w-25">
+                <label htmlFor="projectFilter">Фильтрация по названию</label>
+                <input className="form-control"
+                       type="text"
+                       aria-label="projectFilter"
+                       onChange={event => {filterProjectsByName(event)}}
+                />
+            </form>
+            <table className="table mt-3">
                     <thead>
                     <tr>
                         {/*<th>Id</th>*/}
@@ -14,22 +27,29 @@ const ProjectList = ({projects}) => {
                     </tr>
                     </thead>
                     <tbody>
-                    {projects.map(project => {
-                        return <ProjectItem project={project} key={project.id}/>
+                    {filteredProjects.map(project => {
+                        return <ProjectItem project={project} users={users} key={project.id}/>
                     })}
                     </tbody>
                 </table>
+            <Link to="/projects/create" className="btn btn-primary">Добавить проект</Link>
         </div>
     );
 };
 
-const ProjectItem = ({project}) => {
+const ProjectItem = ({project, users}) => {
+    const getUserNames = (allUsers, members) => {
+        let output = []
+        for (const member of members) {
+            output.push(users.filter(user => user.id === member)[0].username)
+        }
+        return output.join(', ')
+    }
     return (
         <tr>
-            {/*<td>{project.id}</td>*/}
             <td><Link to={`${project.id}`}>{project.projectName}</Link></td>
             <td>{project.gitRepo}</td>
-            <td>{project.members}</td>
+            <td>{getUserNames(users, project.members)}</td>
         </tr>
     )
 }
