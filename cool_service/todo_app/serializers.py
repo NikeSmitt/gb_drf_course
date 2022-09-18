@@ -25,7 +25,7 @@ class ProjectModelSerializer(serializers.ModelSerializer):
 class TodoModelSerializer(serializers.ModelSerializer):
     
     # project = ProjectModelSerializer(read_only=True)
-    author = serializers.SlugRelatedField('username', queryset=User.objects.all())
+    # author = serializers.SlugRelatedField('username', queryset=User.objects.all())
     
     class Meta:
         model = Todo

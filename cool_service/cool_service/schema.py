@@ -27,16 +27,16 @@ class TodoMutation(graphene.Mutation):
     class Arguments:
         content = graphene.String(required=True)
         todo_id = graphene.String(required=True)
-    
+
     todo = graphene.Field(TodoType)
-    
+
     @classmethod
     def mutate(cls, root, info, content, todo_id):
         try:
             todo = Todo.objects.get(id=todo_id)
         except Todo.DoesNotExist:
             raise Todo.DoesNotExist
-        
+
         todo.content = content
         todo.save()
         return cls(todo=todo)
@@ -50,22 +50,22 @@ class Query(graphene.ObjectType):
     todos = graphene.List(TodoType)
     projects = graphene.List(ProjectType)
     users = graphene.List(UserType)
-    
+
     projects_by_name = graphene.List(ProjectType, project_name=graphene.String(required=True))
     user_by_id = graphene.Field(UserType, user_id=graphene.Int(required=True))
-    
+
     def resolve_todos(root, info):
         return Todo.objects.select_related('project', 'author').all()
-    
+
     def resolve_projects(root, info):
         return Project.objects.all()
-    
+
     def resolve_users(root, info):
         return User.objects.all()
-    
+
     def resolve_projects_by_name(root, info, project_name):
         return Project.objects.filter(project_name__contains=project_name).all()
-    
+
     def resolve_user_by_id(self, info, user_id):
         try:
             return User.objects.get(id=user_id)

@@ -1,7 +1,8 @@
 import React from 'react';
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 
-const ProjectDetail = ({projects}) => {
+const ProjectDetail = ({projects, deleteSubmit}) => {
+    const navigate = useNavigate()
     const detailedProjectId = useParams()
     const filteredProject = projects.filter(project => project.id === detailedProjectId.id)[0]
     return (
@@ -13,6 +14,10 @@ const ProjectDetail = ({projects}) => {
                 {filteredProject.members.map((member, index) => {
                     return (<p><a href={member}>Member {index + 1}</a></p>)
                 })}
+                <button onClick={() => {
+                    deleteSubmit(filteredProject.id)
+                    navigate('/projects/')
+                }} className="btn btn-danger">Delete</button>
             </div>
         </div>
     );
